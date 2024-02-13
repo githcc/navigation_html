@@ -60,7 +60,6 @@ a[onclick] {
     position: absolute;
     width: 100%;
     background: #3384a2;
-    color: #FFF;
     border-radius: 2px;
     text-decoration: none;
 }
@@ -72,8 +71,9 @@ button{
     width: 80px;
     height: 40px;
     margin: 5px;
-    font-size: 15px;
+    font-size: 14px;
     background-color: rgba(255,255,255,1);
+    color: #6b7184;
 }
 
 button:hover {
@@ -91,8 +91,9 @@ select{
     width: 80px;
     height: 40px;
     margin: 5px;
-    font-size: 15px;
+    font-size: 14px;
     text-decoration: none;
+    color: #6b7184;
 }
 
 .desktop-only {
