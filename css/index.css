@@ -82,6 +82,10 @@ button:hover {
     font-weight: bold;
     background: #6b7184;
     text-decoration: none;
+    transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease; /* Firefox 4 */
+    -webkit-transition: all 0.3s ease; /* Safari 和 Chrome */
+    -o-transition: all 0.3s ease; /* Opera */
 }
 
 select{
