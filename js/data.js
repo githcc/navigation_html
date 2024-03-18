@@ -353,6 +353,6 @@ let musics = [
 
 let count = 0;
 let maxCount = 0;
-let basePath = "https://githcc.github.io/music-self/";
+let basePath = "https://githcc.github.io/music_self/";
 musics = musics.map(item=>basePath+item);
 let musicsNow = musics;
