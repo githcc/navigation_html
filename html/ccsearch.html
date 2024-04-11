@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索导航</title>
+    <link href="../css/http_cdn.bootcdn.net_ajax_libs_zui_1.9.1_css_zui.css" rel="stylesheet">
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        font-size: 20px;
+        color: #fff;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    option {
+        padding: 3px;
+    }
+
+    form {
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"], select, button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 5px;
+    }
+
+    ul li {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    ul li:hover {
+        background-color: #e9e9e9;
+    }
+
+    .suggestions {
+        position: absolute;
+        z-index: 1000; /* Ensure it's above other elements */
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .suggestion-item {
+        padding: 10px;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .suggestion-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    #searchEngine {
+        height: 200px;
+    }
+
+    select {
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    option {
+        font-size: 16px;
+        padding: 3px;
+    }
+</style>
+<body>
+<div id="app" class="container main-content">
+    <form @submit.prevent="search">
+        <label for="searchCategory">分类</label>
+        <select id="searchCategory" v-model="selectedCategory">
+            <option v-for="(category, index) in categories" :value="category.value" :key="index">{{ category.label }}
+            </option>
+        </select>
+        <label for="searchEngine">网站</label>
+        <select id="searchEngine" v-model="selectedEngines" multiple>
+            <option v-for="(engine, index) in searchEngines[selectedCategory]" :value="engine.url" :key="index">
+                {{ engine.name }}
+            </option>
+        </select>
+        <label for="searchQuery">内容</label>
+        <input type="text" id="searchQuery" v-model="searchQuery" @input="getSuggestions" autocomplete="off" placeholder="press Enter to send">
+        <ul v-if="suggestions.length > 0" class="suggestions" id="suggestionsUl" @mouseleave="startTimer"
+            @mouseenter="clearTimer">
+            <li class="suggestion-item" v-for="(suggestion, index) in suggestions" :key="index"
+                @click="selectSuggestion(suggestion)">{{ suggestion }}
+            </li>
+        </ul>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            searchQuery: '',
+            selectedCategory: 'pan',
+            selectedEngines: [],
+            categories: [
+                {label: '网盘', value: 'pan'},
+                {label: '编程', value: 'programming'},
+                {label: '翻译', value: 'translate'},
+                {label: '视频', value: 'video'},
+                {label: '动漫', value: 'anime'},
+                {label: '软件', value: 'software'},
+                {label: '指数', value: 'index'},
+                {label: '壁纸', value: 'picture'},
+                {label: '工具', value: 'tools'},
+                {label: '吃喝玩乐', value: 'lifestyle'},
+                {label: '行业标准', value: 'standards'},
+                {label: 'AI', value: 'AISearch'},
+                {label: '搜索引擎', value: 'search'}
+            ],
+            searchEngines: {
+                "pan": [
+                    {name: "皮卡搜", url: "https://www.pikaso.top/search/?pan=all&type=folder&q=%s"},
+                    {name: "小云搜", url: "https://www.yunso.net/index/user/s?wd=%s"},
+                    {name: "兄弟盘", url: "https://xiongdipan.com/search?k=%s"},
+                    {name: "猫狸盘搜", url: "https://www.alipansou.com/search?k=%s"}
+                ],
+                "programming": [
+                    {name: "GitHub", url: "https://github.com/search?q=%s"},
+                    {name: "CSDN", url: "https://so.csdn.net/so/search?q=%s"},
+                    {name: "Stackoverflow", url: "https://stackoverflow.com/search?q=%s"},
+                    {name: "简书", url: "https://www.jianshu.com/search?q=%s&page=1&type=note"},
+                    {name: "Maven", url: "https://central.sonatype.com/search?q=%s"}
+                ],
+                "translate": [
+                    {name: "谷歌", url: "https://translate.google.com/?sl=auto&tl=en&text=%s&op=translate"},
+                    {name: "有道", url: "https://www.youdao.com/result?word=%s&lang=en"}
+                ],
+                "video": [
+                    {name: "b站", url: "https://search.bilibili.com/all?keyword=%s"},
+                    {name: "抖音", url: "https://www.douyin.com/search/%s"},
+                    {name: "Youtube", url: "https://www.youtube.com/results?search_query=%s"},
+                    {name: "小雅", url: "https://119.91.23.137:8080/search?box=%s&url=&type=video"},
+                    {name: "豆瓣", url: "https://www.douban.com/search?q=%s"}
+                ],
+                "anime": [
+                    {name: "包子漫画", url: "https://www.baozimh.com/search?q=%s"},
+                    {name: "风车动漫", url: "https://www.dmla5.com/search/-------------.html?wd=%s"}
+                ],
+                "software": [
+                    {name: "APKCombo", url: "https://apkcombo.com/zh/search/%s#gsc.tab=0&gsc.q=123&gsc.sort="},
+                    {name: "Scoop", url: "https://scoop.sh/#/apps?q=%s&o=false"},
+                    {name: "油猴", url: "https://greasyfork.org/zh-CN/scripts?q=%s"}
+                ],
+                "lifestyle": [
+                    {name: "大众点评", url: "https://www.dianping.com/search/keyword/4/0_%s"},
+                    {name: "小红书", url: "https://www.xiaohongshu.com/search_result?keyword=%s"},
+                    {name: "抖音", url: "https://www.douyin.com/search/%s"}
+                ],
+                "index": [
+                    {name: "百度指数", url: "https://index.baidu.com/v2/main/index.html#/trend/%s?words=%s"},
+                    {
+                        name: "巨量算数",
+                        url: "https://trendinsight.oceanengine.com/arithmetic-index/analysis?keyword=%s&appName=aweme"
+                    },
+                    {name: "谷歌趋势", url: "https://trends.google.com/trends/explore?q=%s"},
+                    {name: "360趋势", url: "https://trends.so.com/result?query=%s"}
+                ],
+                "picture": [
+                    {name: "pexels", url: "https://www.pexels.com/search/%s/"},
+                    {name: "wallhere", url: "https://wallhere.com/zh/wallpapers?q=%s"},
+                    {name: "hdqwalls", url: "https://hdqwalls.com/search?q=%s"},
+                    {name: "wallhaven", url: "https://wallhaven.cc/search?q=%s"},
+                    {name: "wallpaperswide", url: "https://wallpaperswide.com/search.html?q=%s"},
+                    {name: "unsplash", url: "https://unsplash.com/s/photos/%s"}
+                ],
+                "tools": [
+                    {name: "在线工具", url: "https://tool.lu/search/?q=%s"},
+                    {name: "菜鸟工具", url: "https://www.jyshare.com/index.php?s=%s"},
+                    {name: "个工具箱", url: "http://www.atoolbox.net/Search.php?Keyword=%s"},
+                    {name: "工具匠", url: "https://toolkk.com/search?keyword=%s"},
+                    {name: "爱资料工具", url: "https://www.toolnb.com/Home/Search/index.html?search=%s"}
+                ],
+                "standards": [
+                    {name: "全国标准信息公共服务平台", url: "https://std.samr.gov.cn/search/std?q=%s"},
+                    {
+                        name: "食品伙伴网",
+                        url: "http://down.foodmate.net/standard/search.php?corpstandard=2&fields=0&kw=%s"
+                    },
+                    {name: "中国标准服务网", url: "https://www.cssn.net.cn/cssn/list?keyword=%s"},
+                    {name: "标准信息服务网", url: "https://www.sacinfo.cn/s/std?p.p2=%s"}
+                ],
+                "AISearch": [
+                    {name: "秘塔AI", url: "https://metaso.cn/?q=%s"},
+                    {name: "ccGpt", url: "https://githcc.github.io/html_self_gpt/?q=%s"},
+                ],
+                "search": [
+                    {name: "百度", url: "https://www.baidu.com/s?wd=%s"},
+                    {name: "必应", url: "https://www.bing.com/search?q=%s&PC=U316&FORM=CHROMN"},
+                    {name: "谷歌", url: "https://www.google.com/search?q=%s"}
+                ]
+            },
+            suggestions: []
+        },
+        watch: {
+            selectedCategory() {
+                this.populateAllEngines();
+            }
+        },
+        created() {
+            this.populateAllEngines();
+        },
+        methods: {
+            populateAllEngines() {
+                if (this.selectedCategory) {
+                    const engines = this.searchEngines[this.selectedCategory];
+                    this.selectedEngines = engines.map(engine => engine.url);
+                }
+            },
+            search() {
+                const searchQuery = this.searchQuery;
+                const selectedEngines = this.selectedEngines;
+                selectedEngines.forEach(function (engine) {
+                    window.open(engine.replaceAll("%s", encodeURIComponent(searchQuery)), "_blank");
+                });
+            },
+            getSuggestions() {
+                const searchQuery = this.searchQuery;
+                if (searchQuery.trim() !== '') {
+                    const apiUrl = `https://suggestion.baidu.com/su?wd=${encodeURIComponent(searchQuery)}&cb=window.baidu.sug`;
+                    const script = document.createElement('script');
+                    script.src = apiUrl;
+                    document.body.appendChild(script);
+                } else {
+                    this.suggestions = [];
+                }
+                this.clearTimer();
+                this.startTimer();
+            },
+            selectSuggestion(suggestion) {
+                this.searchQuery = suggestion;
+                this.suggestions = [];
+            },
+            startTimer() {
+                this.timer = setTimeout(() => {
+                    this.hideDiv();
+                }, 3000);
+            },
+            clearTimer() {
+                clearTimeout(this.timer);
+            },
+            hideDiv() {
+                document.getElementById('suggestionsUl').style.display = 'none';
+            }
+        }
+    });
+
+
+    // Callback function for Baidu suggestion API
+    window.baidu = {
+        sug: function (data) {
+            if (data && data.s) {
+                app.$data.suggestions = data.s;
+            }
+        }
+    };
+</script>
+</body>
+</html>
