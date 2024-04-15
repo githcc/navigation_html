@@ -168,9 +168,10 @@
             const item = data.data[i];
             let itemName = item.name;
             htmlContent += `
-                <p><a href="${item.url}" target="_blank" style="color:#aaa; text-decoration: none;"><strong>${i + 1}. ${itemName}</strong></a>`;
+                <p style="color:#777;"><a href="${item.url}" target="_blank" style="color:#aaa; text-decoration: none;"><strong >${i + 1}. ${itemName}</strong></a>`;
             if (item.hot !== undefined) {
-                htmlContent += `- 热度: ${item.hot}`;
+                item.hot = item.hot.replace("热度","");
+                htmlContent += ` <nobr>热度: ${item.hot}<nobr>`;
             }
             htmlContent += `</p>
                 `;
