@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多平台热搜榜</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .hot-search-list {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .hot-search-list h2 {
+            font-size: 20px;
+            color: #ccc; /* 设置标题颜色为白色 */
+            margin-bottom: 10px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 300px;
+            overflow-y: scroll;
+            border: none;
+            box-sizing: border-box;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4aa1f3; /* 设置链接颜色为蓝色 */
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #555; /* 设置分隔线颜色为稍亮的灰色 */
+            margin: 10px 0;
+        }
+
+        @media screen and (min-width: 1200px) {
+            .hot-search-list {
+                width: calc(50% - 20px);
+                margin-right: 20px;
+            }
+
+            .hot-search-list:nth-child(2n) {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hot-search-list">
+        <h2>百度热搜</h2>
+        <!-- 使用iframe包裹百度热搜内容 -->
+        <iframe id="baiduHotSearchFrame"></iframe>
+    </div>
+    <div class="hot-search-list">
+        <h2>抖音热搜</h2>
+        <!-- 使用iframe包裹抖音热搜内容 -->
+        <iframe id="douyinHotSearchFrame"></iframe>
+    </div>
+    <div class="hot-search-list">
+        <h2>微博热搜</h2>
+        <!-- 使用iframe包裹微博热搜内容 -->
+        <iframe id="weiboHotSearchFrame"></iframe>
+    </div>
+    <div class="hot-search-list">
+        <h2>知乎热搜</h2>
+        <!-- 使用iframe包裹知乎热搜内容 -->
+        <iframe id="zhihuHotSearchFrame"></iframe>
+    </div>
+    <div class="hot-search-list">
+        <h2>B站热搜</h2>
+        <!-- 使用iframe包裹B站热搜内容 -->
+        <iframe id="bilibiliHotSearchFrame"></iframe>
+    </div>
+    <div class="hot-search-list">
+        <h2>今日头条热搜</h2>
+        <!-- 使用iframe包裹今日头条热搜内容 -->
+        <iframe id="toutiaoHotSearchFrame"></iframe>
+    </div>
+</div>
+
+<script>
+    // 请求百度热搜数据
+    fetch('https://tenapi.cn/v2/baiduhot')
+        .then(response => response.json())
+        .then(data => {
+            // 渲染数据到百度热搜iframe中
+            const baiduHotSearchFrame = document.getElementById('baiduHotSearchFrame');
+            renderHotSearchData(baiduHotSearchFrame, data);
+        })
+        .catch(error => console.error('Error fetching Baidu hot search data:', error));
+
+    // 请求抖音热搜数据
+    fetch('https://tenapi.cn/v2/douyinhot')
+        .then(response => response.json())
+        .then(data => {
+            // 渲染数据到抖音热搜iframe中
+            const douyinHotSearchFrame = document.getElementById('douyinHotSearchFrame');
+            renderHotSearchData(douyinHotSearchFrame, data);
+        })
+        .catch(error => console.error('Error fetching Douyin hot search data:', error));
+
+    // 请求微博热搜数据
+    fetch('https://tenapi.cn/v2/weibohot')
+        .then(response => response.json())
+        .then(data => {
+            // 渲染数据到微博热搜iframe中
+            const weiboHotSearchFrame = document.getElementById('weiboHotSearchFrame');
+            renderHotSearchData(weiboHotSearchFrame, data);
+        })
+        .catch(error => console.error('Error fetching Weibo hot search data:', error));
+
+    // 请求知乎热搜数据
+    fetch('https://tenapi.cn/v2/zhihuhot')
+        .then(response => response.json())
+        .then(data => {
+            // 渲染数据到知乎热搜iframe中
+            const zhihuHotSearchFrame = document.getElementById('zhihuHotSearchFrame');
+            renderHotSearchData(zhihuHotSearchFrame, data);
+        })
+        .catch(error => console.error('Error fetching Zhihu hot search data:', error));
+
+    // 请求B站热搜数据
+    fetch('https://tenapi.cn/v2/bilihot')
+        .then(response => response.json())
+        .then(data => {
+            // 渲染数据到B站热搜iframe中
+            const bilibiliHotSearchFrame = document.getElementById('bilibiliHotSearchFrame');
+            renderHotSearchData(bilibiliHotSearchFrame, data);
+        })
+        .catch(error => console.error('Error fetching Bilibili hot search data:', error));
+
+    // 请求今日头条热搜数据
+    fetch('https://tenapi.cn/v2/toutiaohot')
+        .then(response => response.json())
+        .then(data => {
+            // 渲染数据到今日头条热搜iframe中
+            const toutiaoHotSearchFrame = document.getElementById('toutiaoHotSearchFrame');
+            renderHotSearchData(toutiaoHotSearchFrame, data);
+        })
+        .catch(error => console.error('Error fetching Toutiao hot search data:', error));
+
+    // 渲染热搜数据到指定的iframe中
+    function renderHotSearchData(frame, data) {
+        let htmlContent = '<div>';
+        for (let i = 0; i < data.data.length; i++) {
+            const item = data.data[i];
+            let itemName = item.name;
+            htmlContent += `
+                <p><a href="${item.url}" target="_blank" style="color:#aaa; text-decoration: none;"><strong>${i + 1}. ${itemName}</strong></a>`;
+            if (item.hot !== undefined) {
+                htmlContent += `- 热度: ${item.hot}`;
+            }
+            htmlContent += `</p>
+                `;
+        }
+        htmlContent += '</div>';
+        frame.contentDocument.body.innerHTML = htmlContent;
+    }
+
+</script>
+</body>
+</html>
