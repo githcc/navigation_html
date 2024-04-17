@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Player</title>
+    <link href="../css/music.css" rel="stylesheet">
+    <meta http-equiv="content-type" content="Cache-Control: no-cache, no-store, must-revalidate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+</head>
+<body>
+<div class="container">
+    <div class="metadata">
+        <h2>
+            <span id="title"></span> -
+            <span id="artist"></span>
+        </h2>
+        <span id="album"></span><br>
+        <span id="year"></span>
+    </div>
+    <img id="album-cover" class="album-cover" alt="Album Cover" onclick="playMusic()" src="../img/default-image.png">
+    <div class="lyrics" id="lyrics">Lyrics file not found</div>
+    <div class="category-list">
+    </div>
+    <div class="song-list">
+        <h3>Songs</h3>
+        <!-- Songs will be dynamically added here -->
+    </div>
+    <div class="music-player">
+        <audio id="music-player" controls></audio>
+    </div>
+</div>
+<script src="../js/jsmediatags.min.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/music.js"></script>
+</body>
+</html>
