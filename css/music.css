@@ -93,6 +93,12 @@ body {
     margin-bottom: 2rem;
 }
 
+.song-list button {
+    line-height: 22px;
+    padding: 2px;
+    margin: 2px;
+}
+
 .music-player {
     width: 80%;
     max-width: 1050px;
