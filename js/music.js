@@ -147,7 +147,7 @@ function playAndShowLyrics(name) {
                             )}`;
                             albumCover.src = base64String;
                         }catch (e) {
-                            albumCover.src = 'img/default-image.png';
+                            albumCover.src = '../img/default-image.png';
                         }
                     }
                     if (musicPlayer.paused) {
