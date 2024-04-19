@@ -14,6 +14,7 @@ categories.forEach(category => {
 filterSongs();
 playAndShowLyrics(musicsNow[0]);
 var musicPlayer = document.getElementById('music-player');
+var blobUrl;
 
 function playMusic() {
     if (musicPlayer.paused) {
@@ -110,7 +111,6 @@ function updateLyrics(currentTimestamp, lyrics, visibleLyrics = 4) {
         lyricsDiv.scrollTop = (lyrics.length - 2 * visibleLyrics) * 22;
     }
 }
-var blobUrl;
 
 function playAndShowLyrics(name) {
     if (musicPlayer && typeof updateLyrics === 'function') {
@@ -147,8 +147,12 @@ function playAndShowLyrics(name) {
                             )}`;
                             albumCover.src = base64String;
                         }catch (e) {
-                            albumCover.src = '../img/default-image.png';
+                            albumCover.src = 'img/default-image.png';
                         }
+                    }
+                    if (musicPlayer.paused) {
+                        // 如果音乐是暂停状态,则开始播放
+                        musicPlayer.play();
                     }
                 },
                 onError: error => {
