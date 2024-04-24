@@ -1,20 +1,18 @@
 /* styles.css */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1e1e1e;
-    color: #f0f0f0;
+    color: #ccc;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1050px;
     margin: 0 auto;
     padding: 20px;
 }
 
 header {
-    background-color: #6b7184;
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -26,10 +24,8 @@ h1, h2 {
 }
 
 main {
-    background-color: #2c2c2c;
     padding: 20px;
     border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .file-input-section {
@@ -42,7 +38,7 @@ main {
 .file-input-label {
     display: inline-block;
     background-color: #6b7184;
-    color: #fff;
+    color: #ccc;
     padding: 10px 20px;
     border-radius: 3px;
     cursor: pointer;
@@ -81,7 +77,7 @@ main {
     padding: 8px;
     font-size: 16px;
     background-color: #3b3b3b;
-    color: #f0f0f0;
+    color: #ccc;
     border: 1px solid #555;
     border-radius: 3px;
 }
@@ -95,7 +91,7 @@ main {
     margin: 20px auto 0;
     padding: 10px 20px;
     background-color: #6b7184;
-    color: #fff;
+    color: #ccc;
     border: none;
     border-radius: 3px;
     cursor: pointer;
