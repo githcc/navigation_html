@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MP3 Metadata Editor</title>
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link rel="stylesheet" href="../css/metaEditor.css">
+</head>
+<body>
+<div class="container main-container">
+  <header>
+    <h1>MP3 Metadata Editor</h1>
+  </header>
+  <main>
+    <section class="file-input-section">
+      <label for="fileInput" class="file-input-label" style="margin: 20px">
+        <i class="fas fa-upload"></i>
+        <span>Choose MP3 File</span>
+      </label>
+      <label class="file-input-label" onclick="saveMetadata()" style="margin: 20px">
+        <i class="fas fa-download"></i>
+        <span>Save Metadata</span>
+      </label>
+      <input type="file" id="fileInput" accept="audio/mpeg" class="file-input" onchange="readMetadata()">
+    </section>
+    <section id="metadataDisplay"></section>
+    <section class="edit-metadata-section">
+      <h2>Edit Metadata</h2>
+      <form>
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title">
+        </div>
+        <div class="form-group">
+          <label for="artist">Artist:</label>
+          <input type="text" id="artist">
+        </div>
+        <div class="form-group">
+          <label for="album">Album:</label>
+          <input type="text" id="album">
+        </div>
+        <div class="form-group">
+          <label for="albumArt">Album Art:</label>
+          <input type="file" id="albumArt" accept="image/*" onchange="updateAlbumArt()">
+          <div id="albumArtPreview"></div>
+        </div>
+        <div class="form-group">
+          <label for="lyrics">Lyrics:</label>
+          <textarea id="lyrics" style="height: 300px;"></textarea>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<script src="../js/jsmediatags.min.js"></script>
+<script src="../js/mp3tag.min.js"></script>
+<script>
+  let originalBuffer, originalAlbumArt;
+
+  function readMetadata() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    jsmediatags.read(file, {
+      onSuccess: function(tag) {
+        const metadata = tag.tags;
+        console.log(metadata);
+        document.getElementById('title').value = metadata.title
+        document.getElementById('artist').value = metadata.artist
+        document.getElementById('album').value = metadata.album
+        try {
+          document.getElementById('lyrics').value = metadata.TXXX.data.data;
+        }catch (e) {
+          document.getElementById('lyrics').value = "";
+        }
+
+        if (metadata.picture) {
+          const picture = metadata.picture;
+          let base64String;
+          try {
+            base64String = btoa(Array.from(picture.data, byte => String.fromCharCode(byte)).join(''));
+          } catch (e) {
+            console.error('Error converting image data to base64:', e);
+            base64String = '';
+          }
+          const img = document.createElement('img');
+          img.src = `data:${picture.format};base64,${base64String}`;
+          img.style.maxWidth = '200px';
+          const albumArtPreview = document.getElementById('albumArtPreview');
+          albumArtPreview.innerHTML = '';
+          albumArtPreview.appendChild(img);
+          originalAlbumArt = picture;
+        } else {
+          const albumArtPreview = document.getElementById('albumArtPreview');
+          albumArtPreview.innerHTML = '';
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          originalBuffer = event.target.result;
+        };
+        reader.readAsArrayBuffer(file);
+      },
+      onError: function(error) {
+        console.log('Error:', error.type, error.info);
+      }
+    });
+  }
+
+  function updateAlbumArt() {
+    const albumArtInput = document.getElementById('albumArt');
+    if (albumArtInput.files.length > 0) {
+      const albumArtFile = albumArtInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const buffer = event.target.result;
+        const type = albumArtFile.type;
+        originalAlbumArt = { data: new Uint8Array(buffer), format: type.slice(6) };
+        console.log(originalAlbumArt);
+
+        // 替换预览图
+        const img = document.createElement('img');
+        img.src = `data:${type};base64,${btoa(String.fromCharCode(...originalAlbumArt.data))}`;
+        img.style.maxWidth = '200px';
+        const albumArtPreview = document.getElementById('albumArtPreview');
+        albumArtPreview.innerHTML = '';
+        albumArtPreview.appendChild(img);
+      };
+      reader.readAsArrayBuffer(albumArtFile);
+    }
+  }
+
+  function saveMetadata() {
+    console.log('Saving metadata...');
+    const title = document.getElementById('title').value;
+    const artist = document.getElementById('artist').value;
+    const album = document.getElementById('album').value;
+    const lyrics = document.getElementById('lyrics').value;
+
+    downloadUpdatedFile(originalBuffer, title, artist, album, lyrics, originalAlbumArt);
+  }
+
+  function downloadUpdatedFile(buffer, title, artist, album, data, albumArt) {
+    var mp3tag = new MP3Tag(buffer, true);
+    mp3tag.read();
+    mp3tag.tags.title = title;
+    mp3tag.tags.artist = artist;
+    mp3tag.tags.album = album;
+    if (!mp3tag.tags.v2.TXXX){
+      mp3tag.tags.v2.TXXX = [{
+        description: "lyrics",
+        text: data}];
+    }else{
+      mp3tag.tags.v2.TXXX[0].text = data;
+    }
+    if (albumArt) {
+      if (!mp3tag.tags.v2.APIC){
+        mp3tag.tags.v2.APIC = [
+          {
+            "format": "image/jpeg",
+            "type": 3,
+            "description": "Cover of Remember the Name (feat. Styles of Beyond) by Fort Minor,Styles Of Beyond",
+            "data": albumArt.data
+          }
+        ];
+      }else {
+        mp3tag.tags.v2.APIC[0].data = albumArt.data;
+      }
+    }
+    mp3tag.save();
+
+    const blob = new Blob([mp3tag.buffer], { type: 'audio/mpeg' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${title}.mp3`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>
+</body>
+</html>
