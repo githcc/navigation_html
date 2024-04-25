@@ -89,7 +89,7 @@
             </div>
         </div>
         <input v-if="!apiKey" type="text" v-model.trim="apiKeyInput" @keyup.enter="saveApiKey" placeholder="Please enter your API key" style="background-color: #3b3b3b;color:#ccc">
-        <input v-if="apiKey" type="text" v-model.trim="newMessage" @keyup.enter="sendMessage" @dblclick="inputDblclick()" @focus="inputFocus()" placeholder="Click to input a question, press Enter to send" style="background-color: #3b3b3b;color:#ccc"/>
+        <input v-if="apiKey" type="text" v-model.trim="newMessage" @keyup.enter="sendMessage" @dblclick="inputDblclick()" @focus="inputFocus()" placeholder="press Enter to send" style="background-color: #3b3b3b;color:#ccc"/>
     </div>
 </div>
 <script src="https://cdn.bootcdn.net/vue/2.6.10/vue.min.js"></script>
