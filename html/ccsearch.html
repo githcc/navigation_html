@@ -18,6 +18,8 @@
 
     h1 {
         text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
     }
 
     option {
@@ -34,28 +36,29 @@
     label {
         display: block;
         margin-bottom: 5px;
+        font-weight: bold;
     }
 
     input[type="text"], select, button {
         width: 100%;
         padding: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
-        background-color: #3b3b3b;
-        color: #ccc;
+        font-size: 16px;
     }
 
     button {
-        background-color: #4CAF50;
+        background-color: #6b7184;
         color: #ccc;
         border: none;
         cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     button:hover {
-        background-color: #45a049;
+        background-color: #6b7184;
     }
 
     ul {
@@ -105,24 +108,60 @@
         height: 200px;
     }
 
-    select {
+    select, option  {
         font-size: 16px;
         padding: 5px;
     }
-
-    option {
+    .category-buttons button {
+        margin: 0 5px;
+        padding: 8px 16px;
+        background-color: #e6e6e6;
+        color: #333;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
         font-size: 16px;
-        padding: 3px;
+    }
+
+    .category-buttons button.active {
+        background-color: #6b7184;
+        color: #fff;
+    }
+
+    .category-buttons button:hover {
+        background-color: #d9d9d9;
+    }
+
+    .category-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .category-buttons button {
+        margin: 0 5px;
+        padding: 8px 16px;
+        background-color: #f1f1f1;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .category-buttons button.active {
+        background-color: #6b7184;
+        color: white;
     }
 </style>
 <body>
 <div id="app" class="container main-content">
+    <div class="category-buttons">
+        <button v-for="(category, index) in categories" :key="index" @click="selectCategory(category.value)"
+                :class="{'active': selectedCategory === category.value}">{{ category.label }}
+        </button>
+    </div>
     <form @submit.prevent="search">
-        <label for="searchCategory">分类</label>
-        <select id="searchCategory" v-model="selectedCategory">
-            <option v-for="(category, index) in categories" :value="category.value" :key="index">{{ category.label }}
-            </option>
-        </select>
         <label for="searchEngine">网站</label>
         <select id="searchEngine" v-model="selectedEngines" multiple>
             <option v-for="(engine, index) in searchEngines[selectedCategory]" :value="engine.url" :key="index">
@@ -130,13 +169,14 @@
             </option>
         </select>
         <label for="searchQuery">内容</label>
-        <input type="text" id="searchQuery" v-model="searchQuery" @input="getSuggestions" autocomplete="off" placeholder="press Enter to send">
+        <input type="text" id="searchQuery" v-model="searchQuery" @input="getSuggestions" autocomplete="off">
         <ul v-if="suggestions.length > 0" class="suggestions" id="suggestionsUl" @mouseleave="startTimer"
             @mouseenter="clearTimer">
             <li class="suggestion-item" v-for="(suggestion, index) in suggestions" :key="index"
                 @click="selectSuggestion(suggestion)">{{ suggestion }}
             </li>
         </ul>
+        <button type="submit">搜索</button>
     </form>
 </div>
 
@@ -258,6 +298,10 @@
                     const engines = this.searchEngines[this.selectedCategory];
                     this.selectedEngines = engines.map(engine => engine.url);
                 }
+            },
+            selectCategory(category) {
+                this.selectedCategory = category;
+                this.populateAllEngines();
             },
             search() {
                 const searchQuery = this.searchQuery;
