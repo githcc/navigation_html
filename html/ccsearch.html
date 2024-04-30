@@ -157,8 +157,16 @@
 <body>
 <div id="app" class="container main-content">
     <div class="category-buttons">
-        <button v-for="(category, index) in categories" :key="index" @click="selectCategory(category.value)"
+        <button v-for="(category, index) in categories.slice(0, (categories.length+1) / 2)" :key="index" @click="selectCategory(category.value)"
                 :class="{'active': selectedCategory === category.value}">{{ category.label }}
+        </button>
+    </div>
+    <div class="category-buttons">
+        <button v-for="(category, index) in categories.slice((categories.length+1) / 2)" :key="index" @click="selectCategory(category.value)"
+                :class="{'active': selectedCategory === category.value}">{{ category.label }}
+        </button>
+        <!-- 如果 categories 数组长度为奇数,则添加一个新的按钮 -->
+        <button v-if="categories.length % 2 === 1" disabled>
         </button>
     </div>
     <form @submit.prevent="search">
@@ -190,71 +198,48 @@
             selectedEngines: [],
             categories: [
                 {label: '搜索引擎', value: 'search'},
+                {label: '学术', value: 'academicSearch'},
+                {label: '编程', value: 'programming'},
                 {label: '网盘', value: 'pan'},
-                {label: '翻译', value: 'translate'},
-                {label: '视频', value: 'video'},
-                {label: '指数', value: 'index'},
-                {label: '壁纸', value: 'picture'},
                 {label: '工具', value: 'tools'},
-                {label: '吃喝玩乐', value: 'lifestyle'},
+                {label: '指数', value: 'index'},
+                {label: '社区', value: 'community'},
                 {label: '行业标准', value: 'standards'},
+                {label: '购物', value: 'shop'},
+                {label: '吃喝玩乐', value: 'lifestyle'},
+                {label: '视频', value: 'video'},
+                {label: '音乐', value: 'music'},
+                {label: '壁纸', value: 'picture'},
+                {label: '导航', value: 'navSearch'},
                 {label: 'AI', value: 'AISearch'},
-                {label: '动漫', value: 'anime'},
-                {label: '编程汇总', value: 'programming'},
-                {label: '软件汇总', value: 'software'}
+                {label: '翻译汇总', value: 'translate'},
+                {label: '动漫汇总', value: 'anime'},
+                {label: '代码汇总', value: 'code'},
+                {label: '软件汇总', value: 'software'},
+                {label: '其它汇总', value: 'other'}
             ],
             searchEngines: {
+                "search": [
+                    {name: "百度", url: "https://www.baidu.com/s?wd=%s"},
+                    {name: "必应", url: "https://www.bing.com/search?q=%s&PC=U316&FORM=CHROMN"},
+                    {name: "谷歌", url: "https://www.google.com/search?q=%s"},
+                    {name: "微信", url: "https://weixin.sogou.com/weixin?p=01030402&query=%s&type=2&ie=utf8"}
+                ],
+                "academicSearch": [
+                    {name: "谷歌", url: "https://scholar.google.com/scholar?q=%s"},
+                    {name: "知网", url: "https://kns.cnki.net/kns8s/defaultresult/index?classid=YSTT4HG0&korder=&kw=%s"},
+                    {name: "万方", url: "https://s.wanfangdata.com.cn/paper?q=%s"}
+                ],
+                "programming": [
+                    {name: "CSDN", url: "https://so.csdn.net/so/search?q=%s"},
+                    {name: "Stack Overflow", url: "https://stackoverflow.com/search?q=%s"},
+                    {name: "简书", url: "https://www.jianshu.com/search?q=%s&page=1&type=note"}
+                ],
                 "pan": [
                     {name: "皮卡搜", url: "https://www.pikaso.top/search/?pan=all&type=folder&q=%s"},
                     {name: "小云搜", url: "https://www.yunso.net/index/user/s?wd=%s"},
                     {name: "兄弟盘", url: "https://xiongdipan.com/search?k=%s"},
                     {name: "猫狸盘搜", url: "https://www.alipansou.com/search?k=%s"}
-                ],
-                "programming": [
-                    {name: "GitHub", url: "https://github.com/search?q=%s"},
-                    {name: "CSDN", url: "https://so.csdn.net/so/search?q=%s"},
-                    {name: "Stackoverflow", url: "https://stackoverflow.com/search?q=%s"},
-                    {name: "简书", url: "https://www.jianshu.com/search?q=%s&page=1&type=note"},
-                    {name: "Maven", url: "https://central.sonatype.com/search?q=%s"}
-                ],
-                "translate": [
-                    {name: "谷歌", url: "https://translate.google.com/?sl=auto&tl=en&text=%s&op=translate"},
-                    {name: "有道", url: "https://www.youdao.com/result?word=%s&lang=en"}
-                ],
-                "video": [
-                    {name: "b站", url: "https://search.bilibili.com/all?keyword=%s"},
-                    {name: "抖音", url: "https://www.douyin.com/search/%s"},
-                    {name: "Youtube", url: "https://www.youtube.com/results?search_query=%s"},
-                    {name: "小雅", url: "https://119.91.23.137:8080/search?box=%s&url=&type=video"},
-                    {name: "豆瓣", url: "https://www.douban.com/search?q=%s"}
-                ],
-                "anime": [
-                    {name: "包子漫画", url: "https://www.baozimh.com/search?q=%s"},
-                    {name: "风车动漫", url: "https://www.dmla5.com/search/-------------.html?wd=%s"}
-                ],
-                "software": [
-                    {name: "APKCombo", url: "https://apkcombo.com/zh/search/%s#gsc.tab=0&gsc.q=123&gsc.sort="},
-                    {name: "Scoop", url: "https://scoop.sh/#/apps?q=%s&o=false"},
-                    {name: "油猴", url: "https://greasyfork.org/zh-CN/scripts?q=%s"}
-                ],
-                "lifestyle": [
-                    {name: "大众点评", url: "https://www.dianping.com/search/keyword/4/0_%s"},
-                    {name: "小红书", url: "https://www.xiaohongshu.com/search_result?keyword=%s"},
-                    {name: "抖音", url: "https://www.douyin.com/search/%s"}
-                ],
-                "index": [
-                    {name: "百度指数", url: "https://index.baidu.com/v2/main/index.html#/trend/%s?words=%s"},
-                    {
-                        name: "巨量算数",
-                        url: "https://trendinsight.oceanengine.com/arithmetic-index/analysis?keyword=%s&appName=aweme"
-                    },
-                    {name: "谷歌趋势", url: "https://trends.google.com/trends/explore?q=%s"},
-                    {name: "360趋势", url: "https://trends.so.com/result?query=%s"}
-                ],
-                "picture": [
-                    {name: "pexels", url: "https://www.pexels.com/search/%s/"},
-                    {name: "wallhere", url: "https://wallhere.com/zh/wallpapers?q=%s"},
-                    {name: "unsplash", url: "https://unsplash.com/s/photos/%s"}
                 ],
                 "tools": [
                     {name: "在线工具", url: "https://tool.lu/search/?q=%s"},
@@ -263,23 +248,84 @@
                     {name: "工具匠", url: "https://toolkk.com/search?keyword=%s"},
                     {name: "爱资料工具", url: "https://www.toolnb.com/Home/Search/index.html?search=%s"}
                 ],
+                "index": [
+                    {name: "百度指数", url: "https://index.baidu.com/v2/main/index.html#/trend/%s?words=%s"},
+                    {name: "巨量算数", url: "https://trendinsight.oceanengine.com/arithmetic-index/analysis?keyword=%s&appName=aweme"},
+                    {name: "谷歌趋势", url: "https://trends.google.com/trends/explore?q=%s"},
+                    {name: "360趋势", url: "https://trends.so.com/result?query=%s"}
+                ],
+                "community": [
+                    {name: "知乎", url: "https://www.zhihu.com/search?type=content&q=%s"},
+                    {name: "v2ex", url: "https://www.google.com/search?q=site:v2ex.com/t%20%s"},
+                    {name: "Hacker News", url: "https://hn.algolia.com/?dateRange=all&page=0&prefix=true&query=%s"}
+                ],
                 "standards": [
                     {name: "全国标准信息公共服务平台", url: "https://std.samr.gov.cn/search/std?q=%s"},
-                    {
-                        name: "食品伙伴网",
-                        url: "http://down.foodmate.net/standard/search.php?corpstandard=2&fields=0&kw=%s"
-                    },
+                    {name: "食品伙伴网", url: "http://down.foodmate.net/standard/search.php?corpstandard=2&fields=0&kw=%s"},
                     {name: "中国标准服务网", url: "https://www.cssn.net.cn/cssn/list?keyword=%s"},
                     {name: "标准信息服务网", url: "https://www.sacinfo.cn/s/std?p.p2=%s"}
                 ],
+                "shop": [
+                    {name: "京东", url: "https://search.jd.com/Search?keyword=%s"},
+                    {name: "淘宝", url: "https://s.taobao.com/search?q=%s"},
+                    {name: "当当", url: "https://search.dangdang.com/?key=%s&act=input"}
+                ],
+                "lifestyle": [
+                    {name: "大众点评", url: "https://www.dianping.com/search/keyword/4/0_%s"},
+                    {name: "小红书", url: "https://www.xiaohongshu.com/search_result?keyword=%s"},
+                    {name: "抖音", url: "https://www.douyin.com/search/%s"}
+                ],
+                "video": [
+                    {name: "b站", url: "https://search.bilibili.com/all?keyword=%s"},
+                    {name: "抖音", url: "https://www.douyin.com/search/%s"},
+                    {name: "西瓜视频", url: "https://www.ixigua.com/search/%s"},
+                    {name: "Youtube", url: "https://www.youtube.com/results?search_query=%s"},
+                    {name: "小雅", url: "https://119.91.23.137:8080/search?box=%s&url=&type=video"}
+                ],
+                "music": [
+                    {name: "Spotify", url: "https://open.spotify.com/search/%s"},
+                    {name: "qq音乐", url: "https://y.qq.com/n/ryqq/search?w=%s&t=song"},
+                    {name: "网易云", url: "https://music.163.com/#/search/m/?s=%s&type=1"}
+                ],
+                "picture": [
+                    {name: "Pexels", url: "https://www.pexels.com/search/%s/"},
+                    {name: "Wallhere", url: "https://wallhere.com/zh/wallpapers?q=%s"},
+                    {name: "Unsplash", url: "https://unsplash.com/s/photos/%s"}
+                ],
+                "navSearch": [
+                    {name: "199it", url: "https://hao.199it.com/search/%s.html"},
+                    {name: "BigData", url: "https://bigdata.ttdh.cn/?post_type=sites&s=%s"}
+                ],
                 "AISearch": [
                     {name: "秘塔AI", url: "https://metaso.cn/?q=%s"},
+                    {name: "perplexity", url: "https://www.perplexity.ai/search?q=%s&focus=internet"},
                     {name: "ccGpt", url: "https://githcc.github.io/html_self_gpt/?q=%s"},
                 ],
-                "search": [
-                    {name: "百度", url: "https://www.baidu.com/s?wd=%s"},
-                    {name: "必应", url: "https://www.bing.com/search?q=%s&PC=U316&FORM=CHROMN"},
-                    {name: "谷歌", url: "https://www.google.com/search?q=%s"}
+                "translate": [
+                    {name: "谷歌", url: "https://translate.google.com/?sl=auto&tl=en&text=%s&op=translate"},
+                    {name: "有道", url: "https://www.youdao.com/result?word=%s&lang=en"}
+                ],
+                "anime": [
+                    {name: "包子漫画", url: "https://www.baozimh.com/search?q=%s"},
+                    {name: "风车动漫", url: "https://www.dmla5.com/search/-------------.html?wd=%s"}
+                ],
+                "code": [
+                    {name: "GitHub", url: "https://github.com/search?q=%s"},
+                    {name: "菜鸟教程", url: "https://www.runoob.com/?s=%s"},
+                    {name: "力扣", url: "https://leetcode.cn/search/?q=%s"}
+                ],
+                "software": [
+                    {name: "Scoop", url: "https://scoop.sh/#/apps?q=%s&o=false"},
+                    {name: "APKCombo", url: "https://apkcombo.com/zh/search/%s#gsc.tab=0&gsc.q=123&gsc.sort="},
+                    {name: "果核剥壳", url: "https://www.ghxi.com/?s=%s"},
+                    {name: "Maven", url: "https://central.sonatype.com/search?q=%s"},
+                    {name: "油猴", url: "https://greasyfork.org/zh-CN/scripts?q=%s"}
+                ],
+                "other": [
+                    {name: "知搜-电子书", url: "https://zhiso.cc/search/?q=%s"},
+                    {name: "EmoJiall", url: "https://www.emojiall.com/zh-hant/search_results?keywords=%s"},
+                    {name: "IconFont", url: "https://www.iconfont.cn/search/index?searchType=icon&q=%s"},
+                    {name: "问答库", url: "https://www.asklib.com/s/%s"}
                 ]
             },
             suggestions: []
@@ -296,12 +342,16 @@
             populateAllEngines() {
                 if (this.selectedCategory) {
                     const engines = this.searchEngines[this.selectedCategory];
-                    this.selectedEngines = engines.map(engine => engine.url);
+                    let categoryLabel = this.categories.filter(categoryIndex => categoryIndex.value === this.selectedCategory);
+                    if (categoryLabel[0].label.indexOf("汇总")<0){
+                        this.selectedEngines = engines.map(engine => engine.url);
+                    }else{
+                        this.selectedEngines = [engines.map(engine => engine.url)[0]];
+                    }
                 }
             },
             selectCategory(category) {
                 this.selectedCategory = category;
-                this.populateAllEngines();
             },
             search() {
                 const searchQuery = this.searchQuery;
