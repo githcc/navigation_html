@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Wall - GEM</title>
+    <base href="https://githcc.github.io/MV_html/">
+    <link href="css.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./img/favicon.ico">
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            background-color: #222;
+        }
+
+        .video {
+            cursor: pointer; /* 鼠标指针样式为手型 */
+            margin: 0 auto;
+        }
+
+        .video video {
+            height: 300px;
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+<div id="videosContainer"></div>
+<script src="./data.js"></script>
+<script>
+    // 渲染视频列表
+    const videosContainer = document.getElementById('videosContainer');
+    videosContainer.classList.add('row');
+    videoPaths = shuffleArray(videoPaths);
+    createVideosWithDelay();
+
+    // 打乱视频
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    async function createVideosWithDelay() {
+        for (let i = 0; i < videoPaths.length; i++) {
+            await createVideoWithDelay(i);
+        }
+    }
+
+    async function createVideoWithDelay(i) {
+        const rowDiv = document.createElement('div');
+        rowDiv.style.display = 'flex';
+        rowDiv.style.marginBottom = '20px';
+        rowDiv.classList.add('col-lg-3');
+        rowDiv.classList.add('col-md-4');
+        rowDiv.classList.add('col-sm-6');
+
+        const videoDiv = document.createElement('div');
+        videoDiv.classList.add('video');
+        videoDiv.setAttribute('onclick', `playOrPause('video${i + 1}')`);
+        videoDiv.setAttribute('ondblclick', `toggleFullScreen('video${i + 1}')`);
+
+        const video = document.createElement('video');
+        video.setAttribute('id', `video${i + 1}`);
+        video.setAttribute('preload', 'none'); // 设置 preload 属性为 'none'
+
+        const source = document.createElement('source');
+        // 处理视频数量小于24
+        source.setAttribute('src', videoPaths[i % videoPaths.length]);
+
+        video.appendChild(source);
+        videoDiv.appendChild(video);
+        rowDiv.appendChild(videoDiv);
+        videosContainer.appendChild(rowDiv);
+    }
+
+    // 播放/暂停
+    function playOrPause(videoId) {
+        let video = document.getElementById(videoId);
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    }
+    // 全屏
+    function toggleFullScreen(videoId) {
+        let video = document.getElementById(videoId);
+        if (!document.fullscreenElement) {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
+</script>
+</body>
+</html>
