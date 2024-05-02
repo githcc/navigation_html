@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
+<head>
+  <meta charset="utf-8" />
+  <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"
-    />
-    <title>Inpaint-web</title>
-    <style>
-      /* 加载页面样式 */
-      .loading-page {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-      }
+  />
+  <title>Inpaint-web</title>
+</head>
+<style>
+  /* 加载页面样式 */
+  .loading-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+  }
 
-      .loading-spinner {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #3498db;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 2s linear infinite;
-      }
+  .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+  }
 
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    </style>
-  </head>
-  <body class="h-screen">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root" class="h-full"></div>
+  @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+</style>
+<body class="h-screen">
+<!-- 加载页面 -->
+<div class="loading-page">
+  <div class="loading-spinner"></div>
+</div>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root" class="h-full"></div>
 
-    <!-- 加载页面 -->
-    <div class="loading-page">
-      <div class="loading-spinner"></div>
-    </div>
 
-  </body>
+</body>
 
-  <script>
-    // 等待 JavaScript 和 CSS 文件加载完成后隐藏加载页面
-    window.addEventListener('load', function() {
-      document.querySelector('.loading-page').style.display = 'none';
-      document.getElementById('root').style.display = 'block';
-    });
-  </script>
-  <script type="module" crossorigin src="../assets/index-EOlEEWyf.js"></script>
-  <link rel="stylesheet" crossorigin href="../assets/index-WNdPxpJ1.css">
+<script>
+  // 等待 JavaScript 和 CSS 文件加载完成后隐藏加载页面
+  window.addEventListener('load', function() {
+    document.querySelector('.loading-page').style.display = 'none';
+    document.getElementById('root').style.display = 'block';
+  });
+</script>
+<script type="module" crossorigin src="../assets/index-ph0rFIZD.js"></script>
+<link rel="stylesheet" crossorigin href="../assets/index-WNdPxpJ1.css">
 </html>
