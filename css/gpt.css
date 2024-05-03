@@ -1,0 +1,129 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #f0f0f0; /* 更改为浅色文字 */
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    padding: 20px;
+    min-width: 200px;
+    border-right: 1px solid #414141; /* 更改为略暗色边框 */
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    color: #d0d0d0; /* 更改为浅色标题 */
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 12px;
+    cursor: pointer;
+    color: #b0b0b0; /* 更改为浅色列表项 */
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.sidebar li:hover {
+    background-color: #2b2b2b; /* 更改为略深的悬停颜色 */
+}
+
+.sidebar li.active {
+    font-weight: 500;
+    color: #e0e0e0; /* 更改为浅色活跃项 */
+}
+
+.chat-container {
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.message-container {
+    height: 80vh;
+    overflow-y: scroll;
+    border: 1px solid #414141; /* 更改为略暗色边框 */
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.message {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #d0d0d0; /* 更改为浅色消息 */
+    font-size: 14px;
+}
+
+.input-container {
+    display: flex;
+    margin-top: 10px;
+}
+
+.input-container textarea {
+    flex-grow: 1;
+    resize: none;
+    padding: 10px 12px;
+    border: 1px solid #414141; /* 更改为略暗色边框 */
+    border-radius: 4px;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 14px;
+    color: #d0d0d0; /* 更改为浅色输入文字 */
+    background-color: #2b2b2b; /* 更改为略深的输入框背景色 */
+}
+
+.input-container button {
+    margin-left: 10px;
+    color: #f0f0f0; /* 更改为浅色按钮文字 */
+    background-color: #424242; /* 更改为略深的按钮背景色 */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.input-container button:hover {
+    background-color: #515151; /* 更改为略深的悬停按钮背景色 */
+}
+
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(28, 28, 28, 0.8); /* 更改为暗黑背景色 */
+}
+
+.loading-spinner {
+    border: 4px solid rgba(240, 240, 240, 0.1); /* 更改为浅色 */
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
