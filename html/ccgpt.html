@@ -45,10 +45,10 @@
                 <button @click="saveApiKey">Send</button>
             </div>
             <div class="input-container" v-if="apiKey">
-                <select v-model="currentApiProvider">
-                    <option value="openai">OpenAI</option>
-                    <option value="gemini">Gemini</option>
-                </select>
+<!--                <select v-model="currentApiProvider">-->
+<!--                    <option value="openai">OpenAI</option>-->
+<!--                    <option value="gemini">Gemini</option>-->
+<!--                </select>-->
                 <textarea v-model="currentMessage" placeholder="Type your message..." @keydown.ctrl.enter="sendMessage"></textarea>
                 <button @click="sendMessage">Send</button>
                 <button @click="clearMessage">Clear</button>
