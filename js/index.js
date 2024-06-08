@@ -2,7 +2,7 @@ const NAV1_SELECTOR = ".nav1";
 const NAV2_SELECTOR = ".nav2";
 const LINK_SELECTOR = ".col-xs-4";
 const IFRAME_SELECTOR = "iframe";
-const HEIGHT_MOBILE = "calc(100% - 170px)";
+const HEIGHT_MOBILE = "calc(100% - 120px)";
 const HEIGHT_NAV2 = "calc(100% - 60px)";
 
 const nav1 = document.querySelector(NAV1_SELECTOR);
