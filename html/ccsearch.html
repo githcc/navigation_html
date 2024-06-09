@@ -199,15 +199,15 @@
             categories: [
                 {label: '搜索', value: 'search'},
                 {label: '视频', value: 'video'},
-                {label: '音乐', value: 'music'},
+                // {label: '音乐', value: 'music'},
                 {label: '图片', value: 'picture'},
                 {label: 'AI', value: 'AI'},
                 {label: '消费', value: 'shop'},
                 {label: '编程', value: 'programming'},
                 {label: '工具', value: 'tools'},
                 {label: '软件', value: 'software'},
-                {label: '社区', value: 'community'},
-                {label: '国标', value: 'standards'},
+                // {label: '社区', value: 'community'},
+                // {label: '国标', value: 'standards'},
                 {label: '其它', value: 'other'}
             ],
             searchEngines: {
@@ -216,19 +216,19 @@
                     {name: "常规_必应", url: "https://www.bing.com/search?q=%s&PC=U316&FORM=CHROMN"},
                     {name: "常规_谷歌", url: "https://www.google.com/search?q=%s"},
                     {name: "常规_微信", url: "https://weixin.sogou.com/weixin?p=01030402&query=%s&type=2&ie=utf8"},
-                    {name: "学术_谷歌", url: "https://scholar.google.com/scholar?q=%s"},
-                    {name: "学术_知网", url: "https://kns.cnki.net/kns8s/defaultresult/index?classid=YSTT4HG0&korder=&kw=%s"},
-                    {name: "学术_万方", url: "https://s.wanfangdata.com.cn/paper?q=%s"},
+                    // {name: "学术_谷歌", url: "https://scholar.google.com/scholar?q=%s"},
+                    // {name: "学术_知网", url: "https://kns.cnki.net/kns8s/defaultresult/index?classid=YSTT4HG0&korder=&kw=%s"},
+                    // {name: "学术_万方", url: "https://s.wanfangdata.com.cn/paper?q=%s"},
                     {name: "网盘_皮卡搜", url: "https://www.pikaso.top/search/?pan=all&type=folder&q=%s"},
                     {name: "网盘_小云搜", url: "https://www.yunso.net/index/user/s?wd=%s"},
                     {name: "网盘_兄弟盘", url: "https://xiongdipan.com/search?k=%s"},
                     {name: "网盘_猫狸盘搜", url: "https://www.alipansou.com/search?k=%s"}
                 ],
                 "video": [
-                    {name: "动漫_风车", url: "https://www.dmla5.com/search/-------------.html?wd=%s"},
+                    // {name: "动漫_风车", url: "https://www.dmla5.com/search/-------------.html?wd=%s"},
                     {name: "常规_b站", url: "https://search.bilibili.com/all?keyword=%s"},
                     {name: "常规_抖音", url: "https://www.douyin.com/search/%s"},
-                    {name: "常规_西瓜视频", url: "https://www.ixigua.com/search/%s"},
+                    // {name: "常规_西瓜视频", url: "https://www.ixigua.com/search/%s"},
                     {name: "常规_Youtube", url: "https://www.youtube.com/results?search_query=%s"}
                 ],
                 "music": [
@@ -237,23 +237,23 @@
                     {name: "网易云", url: "https://music.163.com/#/search/m/?s=%s&type=1"}
                 ],
                 "picture": [
-                    {name: "漫画_包子", url: "https://www.baozimh.com/search?q=%s"},
+                    // {name: "漫画_包子", url: "https://www.baozimh.com/search?q=%s"},
                     {name: "常规_Pexels", url: "https://www.pexels.com/search/%s/"},
                     {name: "常规_Wallhere", url: "https://wallhere.com/zh/wallpapers?q=%s"},
                     {name: "常规_Unsplash", url: "https://unsplash.com/s/photos/%s"}
                 ],
                 "AI": [
                     {name: "秘塔AI", url: "https://metaso.cn/?q=%s"},
-                    {name: "perplexity", url: "https://www.perplexity.ai/search?q=%s&focus=internet"},
+                    // {name: "perplexity", url: "https://www.perplexity.ai/search?q=%s&focus=internet"},
                     {name: "gpt", url: "https://githcc.github.io/html_self_gpt/?q=%s&i=0"},
                 ],
                 "shop": [
                     {name: "线上_京东", url: "https://search.jd.com/Search?keyword=%s"},
                     {name: "线上淘宝", url: "https://s.taobao.com/search?q=%s"},
-                    {name: "线上_当当", url: "https://search.dangdang.com/?key=%s&act=input"},
+                    // {name: "线上_当当", url: "https://search.dangdang.com/?key=%s&act=input"},
                     {name: "线下_大众点评", url: "https://www.dianping.com/search/keyword/4/0_%s"},
-                    {name: "线下_小红书", url: "https://www.xiaohongshu.com/search_result?keyword=%s"},
-                    {name: "线下_抖音", url: "https://www.douyin.com/search/%s"}
+                    // {name: "线下_小红书", url: "https://www.xiaohongshu.com/search_result?keyword=%s"},
+                    // {name: "线下_抖音", url: "https://www.douyin.com/search/%s"}
                 ],
                 "programming": [
                     {name: "常规_CSDN", url: "https://so.csdn.net/so/search?q=%s"},
@@ -271,16 +271,22 @@
                 "tools": [
                     {name: "常规_在线工具", url: "https://tool.lu/search/?q=%s"},
                     {name: "常规_菜鸟工具", url: "https://www.jyshare.com/index.php?s=%s"},
-                    {name: "常规_工具箱", url: "http://www.atoolbox.net/Search.php?Keyword=%s"},
-                    {name: "常规_工具匠", url: "https://toolkk.com/search?keyword=%s"},
-                    {name: "常规_爱资料工具", url: "https://www.toolnb.com/Home/Search/index.html?search=%s"},
+                    // {name: "常规_工具箱", url: "http://www.atoolbox.net/Search.php?Keyword=%s"},
+                    // {name: "常规_工具匠", url: "https://toolkk.com/search?keyword=%s"},
+                    // {name: "常规_爱资料工具", url: "https://www.toolnb.com/Home/Search/index.html?search=%s"},
                     {name: "指数_百度", url: "https://index.baidu.com/v2/main/index.html#/trend/%s?words=%s"},
-                    {name: "指数_抖音", url: "https://trendinsight.oceanengine.com/arithmetic-index/analysis?keyword=%s&appName=aweme"},
+                    // {name: "指数_抖音", url: "https://trendinsight.oceanengine.com/arithmetic-index/analysis?keyword=%s&appName=aweme"},
                     {name: "指数_谷歌", url: "https://trends.google.com/trends/explore?q=%s"},
-                    {name: "指数_360", url: "https://trends.so.com/result?query=%s"},
+                    // {name: "指数_360", url: "https://trends.so.com/result?query=%s"},
                     {name: "翻译_谷歌", url: "https://translate.google.com/?sl=auto&tl=en&text=%s&op=translate"},
-                    {name: "翻译_有道", url: "https://www.youdao.com/result?word=%s&lang=en"},
-                    {name: "翻译_gpt", url: "https://githcc.github.io/html_self_gpt/?q=%s&i=15"}
+                    // {name: "翻译_有道", url: "https://www.youdao.com/result?word=%s&lang=en"},
+                    // {name: "翻译_gpt", url: "https://githcc.github.io/html_self_gpt/?q=%s&i=15"}
+                ],
+                "software": [
+                    {name: "Scoop", url: "https://scoop.sh/#/apps?q=%s&o=false"},
+                    {name: "APKCombo", url: "https://apkcombo.com/zh/search/%s#gsc.tab=0&gsc.q=123&gsc.sort="},
+                    {name: "果核剥壳", url: "https://www.ghxi.com/?s=%s"},
+                    {name: "油猴", url: "https://greasyfork.org/zh-CN/scripts?q=%s"}
                 ],
                 "community": [
                     {name: "知乎", url: "https://www.zhihu.com/search?type=content&q=%s"},
@@ -292,12 +298,6 @@
                     {name: "食品伙伴网", url: "http://down.foodmate.net/standard/search.php?corpstandard=2&fields=0&kw=%s"},
                     {name: "中国标准服务网", url: "https://www.cssn.net.cn/cssn/list?keyword=%s"},
                     {name: "标准信息服务网", url: "https://www.sacinfo.cn/s/std?p.p2=%s"}
-                ],
-                "software": [
-                    {name: "Scoop", url: "https://scoop.sh/#/apps?q=%s&o=false"},
-                    {name: "APKCombo", url: "https://apkcombo.com/zh/search/%s#gsc.tab=0&gsc.q=123&gsc.sort="},
-                    {name: "果核剥壳", url: "https://www.ghxi.com/?s=%s"},
-                    {name: "油猴", url: "https://greasyfork.org/zh-CN/scripts?q=%s"}
                 ],
                 "other": [
                     {name: "知搜-电子书", url: "https://zhiso.cc/search/?q=%s"},
