@@ -335,7 +335,15 @@
                 const searchQuery = this.searchQuery;
                 const selectedEngines = this.selectedEngines;
                 selectedEngines.forEach(function (engine) {
-                    window.open(engine.replaceAll("%s", encodeURIComponent(searchQuery)), "_blank");
+                    if (searchQuery.trim() === ''){
+                        const regex = /^(https?:\/\/[^\/]+)\//;
+                        const match = engine.match(regex);
+                        if (match) {
+                            window.open(match[1], "_blank");
+                        }
+                    }else{
+                        window.open(engine.replaceAll("%s", encodeURIComponent(searchQuery)), "_blank");
+                    }
                 });
             },
             getSuggestions() {
