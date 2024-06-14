@@ -157,18 +157,18 @@
 <body>
 <div id="app" class="container main-content">
     <div class="category-buttons">
-        <button v-for="(category, index) in categories.slice(0, (categories.length+1) / 2)" :key="index" @click="selectCategory(category.value)"
+        <button v-for="(category, index) in categories.slice(0, (categories.length+1) )" :key="index" @click="selectCategory(category.value)"
                 :class="{'active': selectedCategory === category.value}">{{ category.label }}
         </button>
     </div>
-    <div class="category-buttons">
-        <button v-for="(category, index) in categories.slice((categories.length+1) / 2)" :key="index" @click="selectCategory(category.value)"
-                :class="{'active': selectedCategory === category.value}">{{ category.label }}
-        </button>
-        <!-- 如果 categories 数组长度为奇数,则添加一个新的按钮 -->
-        <button v-if="categories.length % 2 === 1" disabled>
-        </button>
-    </div>
+<!--    <div class="category-buttons">-->
+<!--        <button v-for="(category, index) in categories.slice((categories.length+1) / 2)" :key="index" @click="selectCategory(category.value)"-->
+<!--                :class="{'active': selectedCategory === category.value}">{{ category.label }}-->
+<!--        </button>-->
+<!--        &lt;!&ndash; 如果 categories 数组长度为奇数,则添加一个新的按钮 &ndash;&gt;-->
+<!--        <button v-if="categories.length % 2 === 1" disabled>-->
+<!--        </button>-->
+<!--    </div>-->
     <form @submit.prevent="search">
         <select id="searchEngine" v-model="selectedEngines" multiple>
             <option v-for="(engine, index) in searchEngines[selectedCategory]" :value="engine.url" :key="index">
