@@ -170,13 +170,11 @@
         </button>
     </div>
     <form @submit.prevent="search">
-        <label for="searchEngine">网站</label>
         <select id="searchEngine" v-model="selectedEngines" multiple>
             <option v-for="(engine, index) in searchEngines[selectedCategory]" :value="engine.url" :key="index">
                 {{ engine.name }}
             </option>
         </select>
-        <label for="searchQuery">内容</label>
         <input type="text" id="searchQuery" v-model="searchQuery" @input="getSuggestions" autocomplete="off">
         <ul v-if="suggestions.length > 0" class="suggestions" id="suggestionsUl" @mouseleave="startTimer"
             @mouseenter="clearTimer">
@@ -184,7 +182,7 @@
                 @click="selectSuggestion(suggestion)">{{ suggestion }}
             </li>
         </ul>
-        <button type="submit">搜索</button>
+        <button type="submit">Send</button>
     </form>
 </div>
 
