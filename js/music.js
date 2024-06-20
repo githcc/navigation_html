@@ -186,9 +186,9 @@ function playAndShowLyrics(name) {
             // Listen for the music player's timeupdate event and update the lyrics display
             musicPlayer.addEventListener('timeupdate', () => {
                 if (detectDeviceType() === 'mobile') {
-                    updateLyrics(musicPlayer.currentTime * 1000, lyricsData, 3);
+                    updateLyrics(musicPlayer.currentTime * 1000, lyricsData, 2);
                 } else {
-                    updateLyrics(musicPlayer.currentTime * 1000, lyricsData);
+                    updateLyrics(musicPlayer.currentTime * 1000, lyricsData, 2);
                 }
             });
         })

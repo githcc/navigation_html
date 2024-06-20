@@ -42,7 +42,7 @@ body {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
-    min-height: 280px;
+    min-height: 160px;
 }
 
 .lyrics p {
